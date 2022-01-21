@@ -86,11 +86,11 @@ export default class RequestBuilder extends Component {
 
     getDeviceRequest(patientId, client) {
         client.request(`DeviceRequest?subject=Patient/${patientId}`,
-            {
-                resolveReferences: ["subject", "performer"],
-                graph: false,
-                flat: true
-            })
+                {
+                    resolveReferences: ["subject", "performer"],
+                    graph: false,
+                    flat: true
+                })
             .then((result) => {
                 this.setState(prevState => ({
                     deviceRequests: {
@@ -130,7 +130,7 @@ export default class RequestBuilder extends Component {
     submit_info(prefetch, request, patient, extraPrefetch, hook) {
         this.consoleLog("Initiating form submission", types.info);
         this.setState({patient});
-        
+
         const hookConfig = {
             "includeConfig": this.state.includeConfig,
             "alternativeTherapy": this.state.alternativeTherapy
@@ -146,13 +146,19 @@ export default class RequestBuilder extends Component {
             return;
         }
         let baseUrl = this.state.baseUrl;
+
+        this.consoleLog("Keys from Public Keys:" + process.env.REACT_APP_PUBLIC_KEYS +
+            " " + JSON.stringify(this.state.keypair), types.info);
         const jwt = "Bearer " + createJwt(this.state.keypair, baseUrl, cdsUrl);
+        this.consoleLog("JWT:" + jwt, types.info);
         console.log(jwt);
         var myHeaders = new Headers({
             "Content-Type": "application/json",
             "authorization": jwt
         });
         this.consoleLog("Fetching response from " + cdsUrl, types.info)
+        this.consoleLog("headers " + myHeaders, types.info)
+        this.consoleLog("body " + JSON.stringify(json_request), types.info)
         try {
             fetch(cdsUrl, {
                 method: "POST",
@@ -181,15 +187,18 @@ export default class RequestBuilder extends Component {
                 this.consoleLog(error.name + ": " + error.message, types.error);
             }
         }
+        this.consoleLog("EK: submit_info - End call" , types.info)
 
     }
 
     takeSuggestion(resource) {
+        this.consoleLog("EK: takeSuggestion" , types.info)
         // when a suggestion is taken, call into the requestBox to resubmit the CRD request with the new request
         this.requestBox.current.replaceRequestAndSubmit(resource);
     }
 
     validateState() {
+        this.consoleLog("EK: validateState" , types.info)
         const validationResult = {};
         Object.keys(this.validateMap).forEach(key => {
             if (this.state[key] && this.validateMap[key](this.state[key])) {
@@ -217,56 +226,56 @@ export default class RequestBuilder extends Component {
 
     render() {
         const header =
-        {
-            "ehrUrl": {
-                "type": "input",
-                "display": "EHR Server",
-                "value": this.state.ehrUrl,
-                "key": "ehrUrl"
-            },
-            "cdsUrl": {
-                "type": "input",
-                "display": "CRD Server",
-                "value": this.state.cdsUrl,
-                "key": "cdsUrl"
-            },
-            "orderSelect": {
-                "type": "input",
-                "display": "Order Select Rest End Point",
-                "value": this.state.orderSelect,
-                "key": "orderSelect"
-            },
-            "orderSign": {
-                "type": "input",
-                "display": "Order Sign Rest End Point",
-                "value": this.state.orderSign,
-                "key": "orderSign"
-            },
-            "authUrl": {
-                "type": "input",
-                "display": "Auth Server",
-                "value": this.state.authUrl,
-                "key": "authUrl"
-            },
-            "baseUrl": {
-                "type": "input",
-                "display": "Base EHR",
-                "value": this.state.baseUrl,
-                "key": "baseUrl"
-            },
-            "includeConfig": {
-                "type": "check",
-                "display": "Include Configuration in CRD Request",
-                "value": this.state.includeConfig,
-                "key": "includeConfig"
-            },
-            "alternativeTherapy": {
-                "type": "check",
-                "display": "Alternative Therapy Cards Allowed",
-                "value": this.state.alternativeTherapy,
-                "key": "alternativeTherapy"
+            {
+                "ehrUrl": {
+                    "type": "input",
+                    "display": "EHR Server",
+                    "value": this.state.ehrUrl,
+                    "key": "ehrUrl"
+                },
+                "cdsUrl": {
+                    "type": "input",
+                    "display": "CRD Server",
+                    "value": this.state.cdsUrl,
+                    "key": "cdsUrl"
+                },
+                "orderSelect": {
+                    "type": "input",
+                    "display": "Order Select Rest End Point",
+                    "value": this.state.orderSelect,
+                    "key": "orderSelect"
+                },
+                "orderSign": {
+                    "type": "input",
+                    "display": "Order Sign Rest End Point",
+                    "value": this.state.orderSign,
+                    "key": "orderSign"
+                },
+                "authUrl": {
+                    "type": "input",
+                    "display": "Auth Server",
+                    "value": this.state.authUrl,
+                    "key": "authUrl"
+                },
+                "baseUrl": {
+                    "type": "input",
+                    "display": "Base EHR",
+                    "value": this.state.baseUrl,
+                    "key": "baseUrl"
+                },
+                "includeConfig": {
+                    "type": "check",
+                    "display": "Include Configuration in CRD Request",
+                    "value": this.state.includeConfig,
+                    "key": "includeConfig"
+                },
+                "alternativeTherapy": {
+                    "type": "check",
+                    "display": "Alternative Therapy Cards Allowed",
+                    "value": this.state.alternativeTherapy,
+                    "key": "alternativeTherapy"
+                }
             }
-        }
 
         return (
             <div>
@@ -305,7 +314,7 @@ export default class RequestBuilder extends Component {
                     {/* <button className={"submit-btn btn btn-class " + (!total ? "button-error" : total === 1 ? "button-ready" : "button-empty-fields")} onClick={this.startLoading}>
                         Submit
                     </button> */}
-                    {/* 
+                    {/*
 
                     <CheckBox elementName="oauth" displayName="OAuth" updateCB={this.updateStateElement} />
                     <CheckBox elementName="prefetch" displayName="Include Prefetch" updateCB={this.updateStateElement} />
