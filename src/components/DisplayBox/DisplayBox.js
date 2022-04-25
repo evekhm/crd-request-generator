@@ -395,7 +395,9 @@ retrieveLaunchContext(link, accessToken, patientId, fhirBaseUrl, fhirVersion) {
 
               const builtCard = (
                 <TerraCard key={cardInd} className='decision-card alert-info'>
-                  <img src={cymbalLogo} alt="SVG as an image"/>
+                  <div>
+                    <img src={cymbalLogo} alt="SVG as an image"/>
+                  </div>
                   <h4 style={cardSectionHeaderStyle}>Summary</h4>
                   <div>{summarySection}</div>
 
