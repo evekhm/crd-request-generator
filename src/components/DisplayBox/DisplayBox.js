@@ -423,7 +423,6 @@ retrieveLaunchContext(link, accessToken, patientId, fhirBaseUrl, fhirVersion) {
           if (renderedCards.length === 0) { 
             return <div>
                       <div className='decision-card alert-warning'>
-                        <img src={cymbalLogo} alt="SVG as an image"/>
                         No Cards
                       </div>
                     </div>; 
