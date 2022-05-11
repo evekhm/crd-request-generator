@@ -62,6 +62,10 @@ export default class RequestBuilder extends Component {
         this.exitSmart = this.exitSmart.bind(this);
         this.takeSuggestion = this.takeSuggestion.bind(this);
         this.requestBox = React.createRef();
+
+        this.consoleLog(process.env.REACT_APP_AUTH, types.info)
+        this.consoleLog(process.env.REACT_APP_EHR_SERVER, types.info)
+        this.consoleLog(process.env.REACT_APP_EHR_BASE, types.info)
     }
 
 
@@ -129,6 +133,9 @@ export default class RequestBuilder extends Component {
 
     submit_info(prefetch, request, patient, extraPrefetch, hook) {
         this.consoleLog("Initiating form submission", types.info);
+        // this.consoleLog("AUTH: " + process.env.REACT_APP_AUTH, types.info)
+        // this.consoleLog("EHR_SERVER: " + process.env.REACT_APP_EHR_SERVER, types.info)
+        // this.consoleLog("EHR_BASE: " + process.env.REACT_APP_EHR_BASE, types.info)
         this.setState({patient});
         
         const hookConfig = {
