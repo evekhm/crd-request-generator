@@ -67,9 +67,6 @@ function setupKeys(callback) {
   const jwkPub2 = KEYUTIL.getJWKFromKey(pubKeyObj);
   const kid = KJUR.jws.JWS.getJWKthumbprint(jwkPub2)
 
-  const {GoogleAuth} = require('google-auth-library');
-  const auth = new GoogleAuth();
-
   const keypair = {
       private: jwkPrv2,
       public: jwkPub2,
