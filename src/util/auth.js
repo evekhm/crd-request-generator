@@ -82,9 +82,9 @@ function setupKeys(callback) {
     "id": kid
   };
 
-    console.log("Token " + process.env.REACT_APP_TOKEN);
-
-  fetch(`${(process.env.REACT_APP_PUBLIC_KEYS ? process.env.REACT_APP_PUBLIC_KEYS : config.public_keys)}/`, {
+  const public_keys_url = process.env.REACT_APP_PUBLIC_KEYS ? process.env.REACT_APP_PUBLIC_KEYS : config.public_keys;
+  console.log("public_keys:" + public_keys_url);
+  fetch(`${public_keys_url}`, {
     "body": JSON.stringify(pubPem),
     "headers": {
         "Content-Type": "application/json",
