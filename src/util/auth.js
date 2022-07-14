@@ -82,15 +82,12 @@ function setupKeys(callback) {
     "id": kid
   };
 
-  const public_keys_url = process.env.REACT_APP_PUBLIC_KEYS ? process.env.REACT_APP_PUBLIC_KEYS : config.public_keys;
+  let public_keys_url = process.env.REACT_APP_PUBLIC_KEYS ? process.env.REACT_APP_PUBLIC_KEYS : config.public_keys;
   console.log("public_keys:" + public_keys_url);
-  fetch(`${public_keys_url}`, {
-    "body": JSON.stringify(pubPem),
-    "headers": {
-        "Content-Type": "application/json",
-        "Authorization" : "Bearer " + process.env.REACT_APP_TOKEN
-    },
-    "method": "POST"
+  fetch(public_keys_url, {
+    body: JSON.stringify(pubPem),
+    headers: { "Content-Type": "application/json"},
+    method: "POST"
   }).then((response) => {
       console.log("Worked! ");
       callback(keypair);
